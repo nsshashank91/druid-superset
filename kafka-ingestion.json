@@ -1,0 +1,48 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "guage_max",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "time",
+          "format": "auto"
+        },
+          "dimensionsSpec" : {
+            "dimensions": [
+              { "name" : "time", "type" : "string"},
+              { "name" : "productId", "type" : "string" },
+              { "name" : "productName", "type" : "string" },
+              { "name" : "productDesc", "type" : "string" },
+              { "name" : "createdBy", "type" : "string" },
+              { "name" : "modelYear", "type" : "string" }
+            ]
+          }      
+        }
+      },
+      "metricsSpec" : [
+        { "type" : "count", "name" : "count" }
+      ],
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "HOUR",
+        "queryGranularity" : "NONE",
+        "rollup" : false
+      }
+    },
+    "ioConfig": {
+      "type":"kafka",
+      "topic": "baymax",
+      "consumerProperties": {
+        "bootstrap.servers": "192.168.225.60:9092"
+      },
+      "taskDuration": "PT2M",
+      "useEarliestOffset": "true"
+    },
+    "tuningConfig" : {
+      "type" : "kafka",
+      "maxRowsPerSegment" : 500000
+    }
+  }
